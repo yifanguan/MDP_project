@@ -194,7 +194,7 @@ int main() {
 	}
 
 	std::cout<<"======begin outputting result from getExpand======"<<std::endl;
-	std::vector<std::pair<int, std::string>> res7 = shape->getExpand();
+	std::vector<std::pair<int, std::string>> res7 = shape->getExpand(2);
 	for (size_t i = 0; i < res7.size(); ++i) {
 	    std::cout << "getExpand::PK: " << res7[i].first << ", getExpand: " << res7[i].second << std::endl;
 	}
