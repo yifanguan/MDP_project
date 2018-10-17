@@ -572,12 +572,13 @@ namespace GeoStar {
   {
     // the function context scopes this "Statement"
     // this gets every row....
-    SQLite::Statement   query(*db, "SELECT geometry from shape");
+    SQLite::Statement   query(*db, "SELECT geometry, PK from shape");
     
     // get contents of rows 1-at-a-time:
     while(query.executeStep()){
       SQLite::Column col = query.getColumn(0);
-      std::cout<<"Shape::getGeometries: "<<SpatiaLite::GeometryCollection(col).toWKTString()<<std::endl;
+      int PK_id = query.getColumn(1);
+      std::cout<<"Shape::getGeometries: "<<SpatiaLite::GeometryCollection(col).toWKTString()<<" PK="<<PK_id<<std::endl;
     }//endwhile
 
 
@@ -668,8 +669,9 @@ namespace GeoStar {
       return res;
 }
 
-    std::vector<std::pair<int, std::string>> Shape::getExpand() {
-      SQLite::Statement query (*db, "select PK, ST_Expand(CastToSingle(geometry), 1) from shape");
+    std::vector<std::pair<int, std::string>> Shape::getExpand(int amount) {
+      std::string amount_str = std::to_string(amount);
+      SQLite::Statement query (*db, "select PK, ST_Expand(CastToSingle(geometry), " + amount_str + ") from shape");
 
       std::vector<std::pair<int, std::string>> res;
       while (query.executeStep()) {
@@ -708,6 +710,93 @@ namespace GeoStar {
     }
     return res;
 }
+
+
+// query on specific geometry with PK passed in
+// same query function lists as above
+
+    std::string Shape::getSimplify(int PK_id) {
+        std::string PK_string = std::to_string(PK_id);
+        SQLite::Statement query (*db, "select Simplify(CastToSingle(geometry), 0.5) from shape where PK = " + PK_string + "GeometryType(CastToSingle(geometry)) = 'LINESTRING' OR GeometryType(CastToSingle(geometry)) = 'RING'");
+	while (query.executeStep())
+            return SpatiaLite::GeometryCollection(query.getColumn(0)).toWKTString();
+}
+
+    std::string Shape::getCentroid(int PK_id) {
+        std::string PK_string = std::to_string(PK_id);
+	SQLite::Statement query (*db, "select Centroid(CastToSingle(geometry)) from shape where PK = " + PK_string);
+	while (query.executeStep())
+            return SpatiaLite::GeometryCollection(query.getColumn(0)).toWKTString();
+}
+
+    std::string Shape::getExpand(int PK_id, int amount) {
+        std::string PK_string = std::to_string(PK_id);
+	SQLite::Statement query (*db, "select Centroid(CastToSingle(geometry)) from shape where PK = " + PK_string);
+	while (query.executeStep())
+	    return SpatiaLite::GeometryCollection(query.getColumn(0)).toWKTString();
+}
+
+    std::string Shape::getEnvelope(int PK_id) {
+        std::string PK_string = std::to_string(PK_id);
+	SQLite::Statement query (*db, "select Envelope(CastToSingle(geometry)) from shape where PK = " + PK_string);
+	while (query.executeStep())
+	    return SpatiaLite::GeometryCollection(query.getColumn(0)).toWKTString();
+}
+
+    std::string Shape::getBoundary(int PK_id) {
+	std::string PK_string = std::to_string(PK_id);
+	SQLite::Statement query (*db, "select Boundary(CastToSingle(geometry)) from shape where PK =" + PK_string);
+	while (query.executeStep())
+	    return SpatiaLite::GeometryCollection(query.getColumn(0)).toWKTString();
+}
+
+    double Shape::getArea(int PK_id) {
+	std::string PK_string = std::to_string(PK_id);
+	SQLite::Statement query (*db, "select Area(CastToSingle(geometry)) from shape WHERE PK = " 
+	+ PK_string + "GeometryType(CastToSingle(geometry)) = 'POLYGON'");
+	while (query.executeStep())
+	    return query.getColumn(0);
+}
+
+    double Shape::getPerimeter(int PK_id) {
+	std::string PK_string = std::to_string(PK_id);
+	SQLite::Statement query (*db, "select Perimeter(CastToSingle(geometry)) from shape WHERE PK = " +
+	PK_string + "GeometryType(CastToSingle(geometry)) = 'POLYGON'");
+	while (query.executeStep())
+	    return query.getColumn(0);
+}
+
+    double Shape::getLength(int PK_id) {
+	std::string PK_string = std::to_string(PK_id);
+	SQLite::Statement query (*db, "select GLength(CastToSingle(geometry)) from shape WHERE PK = "+ 
+	PK_string + "GeometryType(CastToSingle(geometry)) = 'LINESTRING'");
+	while (query.executeStep())
+	    return query.getColumn(0);
+}
+
+    // select the specific geometry and return it as WKT string
+    std::string Shape::getGeometry(int PK_id) {
+	std::string PK_string = std::to_string(PK_id);
+	SQLite::Statement query (*db, "select CastToSingle(geometry) from shape WHERE PK = " + PK_string);
+	while (query.executeStep())
+	    return SpatiaLite::GeometryCollection(query.getColumn(0)).toWKTString();
+}
+
+
+    // write geometry to file
+    // geometry is represented in WKT string
+    void Shape::writeGeometryToFile(std::string geometry, std::string filename) {
+	std::ofstream myfile;
+	myfile.open(filename);
+	std::cout<<"begin write to file:"<<geometry<<std::endl;
+	myfile<<geometry<<'\n';
+}
+    
+    
+
+    
+
+    
 
   //-----------------------------------------------------------------------
   void Shape::addSpatialReferenceSystems()

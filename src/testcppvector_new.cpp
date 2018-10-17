@@ -194,7 +194,7 @@ int main() {
 	}
 
 	std::cout<<"======begin outputting result from getExpand======"<<std::endl;
-	std::vector<std::pair<int, std::string>> res7 = shape->getExpand();
+	std::vector<std::pair<int, std::string>> res7 = shape->getExpand(2);
 	for (size_t i = 0; i < res7.size(); ++i) {
 	    std::cout << "getExpand::PK: " << res7[i].first << ", getExpand: " << res7[i].second << std::endl;
 	}
@@ -227,6 +227,11 @@ int main() {
 	for (size_t i = 0; i < res9.size(); ++i) {
 	    std::cout << "getSimplify::PK: " << res9[i].first << ", getSimplify: " << res9[i].second << std::endl;
 	}
+
+	std::cout<<"======testing getGeometry====================="<<std::endl;
+	std::string geo = shape->getGeometry(2);
+	std::cout<<geo<<std::endl;
+	shape->writeGeometryToFile(geo, "lineString");
 
 	exit(-1);//debug
 

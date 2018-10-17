@@ -262,16 +262,60 @@ namespace GeoStar {
     void addPolygon(const SimpleFeatures::Polygon3D<T> poly);
 
     void getGeometries();
+    
+
+    // different functions for querying the database in shape class
+    // output is vector of pair where pair.first is PK, pair.second is geometry as WKT string
+    
+    // get the geometries that is within the geometry described by text parameter
+    // text represents a geometry in WKT string
     std::vector<std::pair<int, std::string>> getWithin(std::string text);
+
+    // get the length of each geometry in shape that is of type LINESTRING
     std::vector<std::pair<int, double>> getLength();
+
+    // get the perimeter of each geometry in shape that is of type POLYGON
     std::vector<std::pair<int, double>> getPerimeter();
+
+    // get the area of each geometry in shape that is of type POLYGON
     std::vector<std::pair<int, double>> getArea();
+
+    // get the boundary of each geometry in shape
     std::vector<std::pair<int, std::string>> getBoundary();
+
+    // get the envelope of each geometry in shape
+    // envelope is the rectangle bounding as a polygon
     std::vector<std::pair<int, std::string>> getEnvelope();
-    std::vector<std::pair<int, std::string>> getExpand();
+
+    // get the rectangle bounding of each geometry in shape 
+    // after expanding by amount parameter in all directions
+    std::vector<std::pair<int, std::string>> getExpand(int amount);
+
+    // get the centroid of each geometry in shape
     std::vector<std::pair<int, std::string>> getCentroid();
+
+    // get the simplified geometry by applying Douglas-Peuker algorithm for each geometry in shape
     std::vector<std::pair<int, std::string>> getSimplify();
 
+
+    // another series of function by passing PK as parameter
+    // and do query on the specific geometry in shape
+    // return the result of the query
+    std::string getSimplify(int PK_id);
+    std::string getCentroid(int PK_id);
+    std::string getExpand(int PK_id, int amount);
+    std::string getEnvelope(int PK_id);
+    std::string getBoundary(int PK_id);
+    double getArea(int PK_id);
+    double getPerimeter(int PK_id);
+    double getLength(int PK_id);
+
+
+    // select a geometry with PK = PK_id from shape
+    // return the geometry as WKT string
+    std::string getGeometry(int PK_id);
+
+    void writeGeometryToFile(std::string geometry, std::string filename);
     
 
   /** \brief Shape::get_column_as_string retrieves the data in a given column as a vector of strings
