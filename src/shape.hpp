@@ -263,58 +263,172 @@ namespace GeoStar {
 
     void getGeometries();
     
+    /** \brief Shape::getWithin retrieves a vector of (pk, WKT string) pairs within the geometry specified by user.
 
-    // different functions for querying the database in shape class
-    // output is vector of pair where pair.first is PK, pair.second is geometry as WKT string
+   \param[in] text
+       This is a string, set by the user, that holds the WKT string of a geometry.
     
-    // get the geometries that is within the geometry described by text parameter
-    // text represents a geometry in WKT string
+   \returns
+       A vector of pairs where the first is primary key, and the second is the corresponding geometry represented by WKT string.
+  */
     std::vector<std::pair<int, std::string>> getWithin(std::string text);
 
-    // get the length of each geometry in shape that is of type LINESTRING
+    /** \brief Shape::getLength retrieves a vector of (pk, length) pairs with type LINESTRING
+
+   \returns
+       A vector of pairs where the first element is primary key, and the second is the corresponding length.
+  */
     std::vector<std::pair<int, double>> getLength();
 
-    // get the perimeter of each geometry in shape that is of type POLYGON
+    /** \brief Shape::getPerimeter retrieves a vector of (pk, perimeter) pairs with type POLYGON
+
+   \returns
+       A vector of pairs where the first element is primary key, and the second is the corresponding perimeter.
+  */
     std::vector<std::pair<int, double>> getPerimeter();
 
-    // get the area of each geometry in shape that is of type POLYGON
+  /** \brief Shape::getPerimeter retrieves a vector of (pk, area) pairs with type POLYGON
+
+   \returns
+       A vector of pairs where the first element is primary key, and the second is the corresponding area.
+  */
     std::vector<std::pair<int, double>> getArea();
 
-    // get the boundary of each geometry in shape
+  /** \brief Shape::getBoundary retrieves a vector of (pk, boundary) pairs of each geometry in shape
+
+   \returns
+       A vector of pairs where the first element is primary key, and the second is the corresponding boundary represented as WKT string.
+  */
     std::vector<std::pair<int, std::string>> getBoundary();
 
-    // get the envelope of each geometry in shape
-    // envelope is the rectangle bounding as a polygon
+  /** \brief Shape::getEnvelope retrieves a vector of (pk, envelope) pairs of each geometry in shape.
+      \brief Envelope is the rectangle bounding as a polygon.
+
+   \returns
+       A vector of pairs where the first element is primary key, and the second is the corresponding envelope represented as WKT string.
+  */
     std::vector<std::pair<int, std::string>> getEnvelope();
 
-    // get the rectangle bounding of each geometry in shape 
-    // after expanding by amount parameter in all directions
+  /** \brief Shape::getExpand retrieves a vector of (pk, boundary) pairs of each geometry in shape 
+      \brief after expanding by amount parameter in all directions
+
+    \param[in] amount
+       This is a int, set by the user
+
+   \returns
+       A vector of pairs where the first element is primary key, and the second is the corresponding boundary represented as WKT string.
+  */
     std::vector<std::pair<int, std::string>> getExpand(int amount);
 
-    // get the centroid of each geometry in shape
+  /** \brief Shape::getCentroid retrieves a vector of (pk, centroid) pairs of each geometry in shape 
+
+   \returns
+       A vector of pairs where the first element is primary key, and the second is the corresponding centroid represented as WKT string.
+  */
     std::vector<std::pair<int, std::string>> getCentroid();
 
-    // get the simplified geometry by applying Douglas-Peuker algorithm for each geometry in shape
+  /** \brief Shape::getSimplify retrieves a vector of (pk, simplified geometry) pairs of each geometry in shape 
+      \brief by applying Douglas-Peuker algorithm for each geometry in shape
+   \returns
+       A vector of pairs where the first element is primary key, and the second is the corresponding simplified geometry represented as WKT string.
+  */
     std::vector<std::pair<int, std::string>> getSimplify();
 
 
     // another series of function by passing PK as parameter
     // and do query on the specific geometry in shape
     // return the result of the query
+
+    /** \brief Shape::getSimplify retrieves a simplified geometry by applying Douglas-Peuker algorithm for each geometry in shape
+
+      \param[in] PK_id
+       This is a int, set by the user, representing the primary key
+      \returns
+         The corresponding simplified geometry with the primary key represented as WKT string.
+    */
     std::string getSimplify(int PK_id);
+
+    /** \brief Shape::getCentroid retrieves the centroid of the geometry with the primary key
+
+      \param[in] PK_id
+       This is a int, set by the user, representing the primary key
+      \returns
+         The corresponding centroid of the geometry with the primary key represented as WKT string.
+    */
     std::string getCentroid(int PK_id);
+
+    /** \brief Shape::getExpand retrieves the rectangle boundary of the geometry with the primary key after expanding by amount parameter in all directions
+
+      \param[in] PK_id
+       This is a int, set by the user, representing the primary key
+     \param[in] amount
+       This is a int, set by the user
+      \returns
+         The corresponding rectangle boundary of the geometry with the primary key represented as WKT string.
+    */
     std::string getExpand(int PK_id, int amount);
+
+    /** \brief Shape::getExpand retrieves the envelope of the geometry with the primary key
+        \brief Envelope is the rectangle bounding as a polygon.
+
+      \param[in] PK_id
+       This is a int, set by the user, representing the primary key
+      \returns
+         The corresponding envelop of the geometry with the primary key represented as WKT string.
+    */
     std::string getEnvelope(int PK_id);
+
+    /** \brief Shape::getExpand retrieves the boundary of the geometry with the primary key.
+      
+      \param[in] PK_id
+       This is a int, set by the user, representing the primary key.
+      \returns
+         The corresponding boundary of the geometry with the primary key represented as WKT string.
+    */
     std::string getBoundary(int PK_id);
+    
+    /** \brief Shape::getArea retrieves the area of the geometry with the primary key.
+      
+      \param[in] PK_id
+       This is a int, set by the user, representing the primary key.
+      \returns
+         The corresponding area of the geometry with the primary key.
+    */
     double getArea(int PK_id);
+
+    /** \brief Shape::getPerimeter retrieves the perimeter of the geometry with the primary key.
+      
+      \param[in] PK_id
+       This is a int, set by the user, representing the primary key.
+      \returns
+         The corresponding Perimeter of the geometry with the primary key.
+    */
     double getPerimeter(int PK_id);
+
+    /** \brief Shape::getLength retrieves the length of the geometry with the primary key
+      
+      \param[in] PK_id
+       This is a int, set by the user, representing the primary key.
+      \returns
+         The corresponding length of the geometry with the primary key.
+    */
     double getLength(int PK_id);
 
-
-    // select a geometry with PK = PK_id from shape
-    // return the geometry as WKT string
+    /** \brief Shape::getGeometry retrieves a geometry with PK = PK_id from shape.
+      \param[in] PK_id
+       This is a int, set by the user, representing the primary key.
+      \returns
+         The corresponding geometry with the primary key as WKT string.
+    */
     std::string getGeometry(int PK_id);
 
+
+    /** \brief Shape::writeGeometryToFile writes a geometry specified by parameter geometry to a file in the format of WKT string.
+      \param[in] geometry
+       This is a string, set by the user, representing a geometry.
+      \param[in] filename
+       This is a string, set by the user, representing the name the file to write.
+    */
     void writeGeometryToFile(std::string geometry, std::string filename);
     
 
