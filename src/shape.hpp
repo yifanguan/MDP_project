@@ -422,6 +422,39 @@ namespace GeoStar {
     */
     std::string getGeometry(int PK_id);
 
+    /** \brief Shape::getBoundary retrieves a geometry with PK = PK_id from shape.
+        \param[in] res_shape
+       This is a Shape pointer, which contains all the results to user    */
+    void getBoundaryReturnShape(Shape* res_shape);
+
+    /** \brief Shape::getExpand retrieves the rectangle boundary of the geometry with the primary key after expanding by amount parameter in all directions
+    \param[in] res_shape
+       This is a Shape pointer, which contains all the results to user
+     \param[in] amount
+       This is a int, set by the user
+    */
+    void getExpandReturnShape(Shape* res_shape, int amount);
+
+
+        /** \brief Shape::getBoundary retrieves a geometry with PK = PK_id from shape.
+     \param[in] res_shape
+       This is a Shape pointer, which contains all the results to user
+      \returns
+         The corresponding geometry with the primary key as WKT string.
+    */
+    void getEnvelopReturnShape(Shape* res_shape);
+
+        /** \brief Shape::getBoundary retrieves a geometry with PK = PK_id from shape.
+      \param[in] res_shape
+       This is a Shape pointer, which contains all the results to user
+    */
+    void getSimplifyReturnShape(Shape* res_shape);
+
+    /** \brief Shape::getBoundary retrieves a geometry with PK = PK_id from shape.
+      \param[in] res_shape
+       This is a Shape pointer, which contains all the results to user
+     */
+    void getCentroidReturnShape(Shape* res_shape);
 
     /** \brief Shape::writeGeometryToFile writes a geometry specified by parameter geometry to a file in the format of WKT string.
       \param[in] geometry
