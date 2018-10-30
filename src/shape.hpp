@@ -464,6 +464,12 @@ namespace GeoStar {
     */
     void writeGeometryToFile(std::string geometry, std::string filename);
     
+    /** \brief Shape::deleteRow deletes a row in db with input PK id
+        \param[in] PK_id
+       This is a int, set by the user, representing the primary key.
+     */
+    void deleteRow(int PK_id);
+
 
   /** \brief Shape::get_column_as_string retrieves the data in a given column as a vector of strings
 
