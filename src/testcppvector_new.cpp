@@ -153,7 +153,7 @@ int main() {
 
 	std::cout<<"===========testing perimeter======================="<<std::endl;
         shape = vec->create_shape("shape12", "shape for testing perimeter");
-	shape->addPoint(10, 5);
+	//shape->addPoint(10, 5);
 	SimpleFeatures::Line<double> line2;
         line2.resize(3);
 	SimpleFeatures::Point<double> pt2(0, 0);
@@ -187,11 +187,23 @@ int main() {
 	    std::cout << "getBoundary::PK: " << res5[i].first << ", getBoundary: " << res5[i].second << std::endl;
 	}
 
+	std::cout<<"======testing getBoundary Return new shape===="<<std::endl;
+
+	GeoStar::Shape* res_shape = vec->create_shape("result shape", "shape for storing results of boundaries");
+	shape->getBoundaryReturnShape(res_shape);
+	res_shape->getGeometries();
+
 	std::cout<<"======begin outputting result from getEnvelope======"<<std::endl;
 	std::vector<std::pair<int, std::string>> res6 = shape->getEnvelope();
 	for (size_t i = 0; i < res6.size(); ++i) {
 	    std::cout << "getEnvelope::PK: " << res6[i].first << ", getEnvelope: " << res6[i].second << std::endl;
 	}
+
+	std::cout<<"======testing getEnvelope Return new shape===="<<std::endl;
+
+	GeoStar::Shape* res_shape2 = vec->create_shape("result shape2", "shape for storing results of envelope");
+	shape->getEnvelopeReturnShape(res_shape2);
+	res_shape->getGeometries();
 
 	std::cout<<"======begin outputting result from getExpand======"<<std::endl;
 	std::vector<std::pair<int, std::string>> res7 = shape->getExpand(2);
@@ -199,11 +211,23 @@ int main() {
 	    std::cout << "getExpand::PK: " << res7[i].first << ", getExpand: " << res7[i].second << std::endl;
 	}
 
+	std::cout<<"======testing getExpand Return new shape===="<<std::endl;
+
+	GeoStar::Shape* res_shape3 = vec->create_shape("result shape3", "shape for storing results of expand");
+	shape->getExpandReturnShape(res_shape3, 2);
+	res_shape->getGeometries();
+
 	std::cout<<"======begin outputting result from getCentroid======"<<std::endl;
 	std::vector<std::pair<int, std::string>> res8 = shape->getCentroid();
 	for (size_t i = 0; i < res8.size(); ++i) {
 	    std::cout << "getCentroid::PK: " << res8[i].first << ", getCentroid: " << res8[i].second << std::endl;
 	}
+
+	std::cout<<"======testing getCentroid Return new shape===="<<std::endl;
+
+	GeoStar::Shape* res_shape4 = vec->create_shape("result shape4", "shape for storing results of centroid");
+	shape->getCentroidReturnShape(res_shape4);
+	res_shape->getGeometries();
         
 
 
@@ -228,11 +252,23 @@ int main() {
 	    std::cout << "getSimplify::PK: " << res9[i].first << ", getSimplify: " << res9[i].second << std::endl;
 	}
 
+	std::cout<<"======testing getSimplify Return new shape===="<<std::endl;
+
+	GeoStar::Shape* res_shape5 = vec->create_shape("result shape5", "shape for storing results of Simplify");
+	shape->getSimplifyReturnShape(res_shape5);
+	res_shape->getGeometries();
+
 	std::cout<<"======testing getGeometry====================="<<std::endl;
 	std::string geo = shape->getGeometry(2);
 	std::cout<<geo<<std::endl;
 	shape->writeGeometryToFile(geo, "lineString");
 
+	std::cout<<"======testing deleteRow====================="<<std::endl;
+	std::cout<<"Before deleteRow()"<<std::endl;
+	shape->getGeometries();
+	shape->deleteRow(1);
+	std::cout<<"After deleteRow()"<<std::endl;
+	shape->getGeometries();
 	exit(-1);//debug
 
         std::cout<<"main: 3.3====================================="<<std::endl;
