@@ -873,6 +873,43 @@ void Shape::getSimplifyReturnShape(Shape * res_shape) {
         query.exec();
 }
 
+    void Shape::movePoint(int PK_id, double new_x, double new_y) {
+	std::string PK_string = std::to_string(PK_id);
+	SQLite::Statement query (*db, "select CastToSingle(geometry) from shape WHERE PK = "+ 
+	PK_string + " AND GeometryType(CastToSingle(geometry)) = 'POINT'");
+	while (query.executeStep()) {
+	    Shape::deleteRow(PK_id);
+	    std::string new_x_str = std::to_string(new_x);
+	    std::string new_y_str = std::to_string(new_y);
+	    std::string geoText = "POINT(" + new_x_str + ' ' + new_y_str + ')';
+	    std::string srid_string = std::to_string(getSRID());
+	    std::string q = ((((std::string("INSERT INTO shape (geometry) VALUES (CastToGeometryCollection(GeomFromText('")+geoText)+"', ")+srid_string)+")))");
+	    SQLite::Statement   query2(*db, q);
+            query2.exec();
+	    return;
+	}
+	
+}
+
+    void Shape::deletePointInLinestring(int PK_id, std::string point_to_delete) {
+	std::string PK_string = std::to_string(PK_id);
+	SQLite::Statement query (*db, "select CastToSingle(geometry) from shape WHERE PK = "+ 
+	PK_string + " AND GeometryType(CastToSingle(geometry)) = 'LINESTRING'");
+	while (query.executeStep()) {
+	    std::string oldGeoText = SpatiaLite::GeometryCollection(query.getColumn(0)).toWKTString();
+	    Shape::deleteRow(PK_id);
+	    size_t idx = oldGeoText.find(point_to_delete);
+	    if (idx < 0 || idx >= oldGeoText.size()) return;
+	    std::string newGeoText = oldGeoText.substr(0, idx) + oldGeoText.substr(idx + point_to_delete.size());
+	    std::string srid_string = std::to_string(getSRID());
+	    std::string q = ((((std::string("INSERT INTO shape (geometry) VALUES (CastToGeometryCollection(GeomFromText('")+newGeoText)+"', ")+srid_string)+")))");
+	    SQLite::Statement   query2(*db, q);
+            query2.exec();
+	    return;
+	}
+	
+}
+
     // write geometry to file
     // geometry is represented in WKT string
     void Shape::writeGeometryToFile(std::string geometry, std::string filename) {

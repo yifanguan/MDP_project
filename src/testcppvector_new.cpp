@@ -269,6 +269,29 @@ int main() {
 	shape->deleteRow(1);
 	std::cout<<"After deleteRow()"<<std::endl;
 	shape->getGeometries();
+	std::cout<<"======testing movePoint====================="<<std::endl;
+	shape = vec->create_shape("shape15", "shape for testing movePoint");
+	shape->addPoint(1.0, 2.0);
+	shape->movePoint(1, 2.0, 3.0);
+	shape->getGeometries();
+	std::cout<<"======testing deletePointInLinestring=========="<<std::endl;
+	SimpleFeatures::Line<double> line4;
+	SimpleFeatures::Point<double> pt4(0, 0);
+	line4.resize(3);
+	line4[0] = pt4;
+	pt4.x = 1;
+	pt4.y = 2;
+	line4[1] = pt4;
+	pt4.x = 3;
+	pt4.y = 4;
+	line4[2] = pt4;
+	shape->addLine(line4);
+	std::cout<<"Before deleting a point in linestring"<<std::endl;
+	shape->getGeometries();
+	std::cout<<"After deleting a point in linestring"<<std::endl;
+	std::string point_to_delete = " 1 2,";
+	shape->deletePointInLinestring(2, point_to_delete);
+	shape->getGeometries();
 	exit(-1);//debug
 
         std::cout<<"main: 3.3====================================="<<std::endl;
