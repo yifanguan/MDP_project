@@ -292,6 +292,78 @@ int main() {
 	std::string point_to_delete = " 1 2,";
 	shape->deletePointInLinestring(2, point_to_delete);
 	shape->getGeometries();
+
+	std::cout<<"======testing deletePointInPOLYGON=========="<<std::endl;
+	shape = vec->create_shape("shape16", "shape for testing deletePointInPOLYGON");
+	shape->addPoint(0.5, 0.5);
+	shape->addPoint(4, 4);
+	shape->addPoint(100, 375);
+
+        SimpleFeatures::Line<double> line5;
+        line5.resize(5);
+	SimpleFeatures::Point<double> point2(0, 0);
+        line5[0]=point2;
+        point2.x=1; point2.y=0;
+        line5[1]=point2;
+	point2.x=1; point2.y=1;
+        line5[2]=point2;
+	point2.x=0; point2.y=1;
+        line5[3]=point2;
+	point2.x=0; point2.y=0;
+        line5[4]=point2;
+        shape->addLine(line5);
+	SimpleFeatures::Ring<double> ring3(line5);
+	SimpleFeatures::Polygon<double> polygon2;
+	polygon2.push_back(ring3);
+	shape->addPolygon(polygon2);
+	std::cout<<"Before deleting a point in POLYGON"<<std::endl;
+	shape->getGeometries();
+	std::cout<<"After deleting a point in POLYGON"<<std::endl;
+	std::string point_to_delete2 = " 0 0,";
+	shape->deletePointInPolygon(5, point_to_delete2);
+	shape->getGeometries();
+
+	std::cout<<"======testing deleteRingInPOLYGON=========="<<std::endl;
+	shape = vec->create_shape("shape17", "shape for testing deleteRingInPOLYGON");
+	shape->addPoint(0.5, 0.5);
+	shape->addPoint(4, 4);
+	shape->addPoint(100, 375);
+
+        SimpleFeatures::Line<double> line6;
+        line6.resize(5);
+	SimpleFeatures::Point<double> point3(0, 0);
+        line6[0]=point3;
+        point3.x=1; point3.y=0;
+        line6[1]=point3;
+	point3.x=1; point3.y=1;
+        line6[2]=point3;
+	point3.x=0; point3.y=1;
+        line6[3]=point3;
+	point3.x=0; point3.y=0;
+        line6[4]=point3;
+        shape->addLine(line6);
+	SimpleFeatures::Ring<double> ring4(line6);
+	SimpleFeatures::Polygon<double> polygon3;
+	polygon3.push_back(ring4);
+	shape->addPolygon(polygon3);
+	std::cout<<"Before deleting a ring in POLYGON"<<std::endl;
+	shape->getGeometries();
+	std::cout<<"After deleting a ring in POLYGON"<<std::endl;
+	std::string ring_to_delete = " 1 0, 1 1, 0 1";
+	shape->deletePointInPolygon(5, ring_to_delete);
+	shape->getGeometries();
+
+        std::cout<<"======testing makecopy=========="<<std::endl;
+	shape = vec->create_shape("shape18", "shape for testing deleteRingInPOLYGON");
+	shape->addPoint(0.5, 0.5);
+	shape->addPoint(4, 4);
+	shape->addPoint(100, 375);
+	std::cout<<"Before making a copy"<<std::endl;
+	shape->getGeometries();
+	std::cout<<"After making a copy"<<std::endl;
+	shape->makecopy(3); //copy a point
+	shape->getGeometries();
+
 	exit(-1);//debug
 
         std::cout<<"main: 3.3====================================="<<std::endl;
