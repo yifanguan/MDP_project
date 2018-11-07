@@ -41,8 +41,8 @@ namespace GeoStar {
   class Shape {
 
   private:
-	std::string shapename;
-	std::string shapetype;
+  std::string shapename;
+  std::string shapetype;
     //sqlite3 * db; // handle opened on construction, closed on destruction
       SQLite::Database  *db;
 
@@ -442,7 +442,7 @@ namespace GeoStar {
       \returns
          The corresponding geometry with the primary key as WKT string.
     */
-    void getEnvelopReturnShape(Shape* res_shape);
+    void getEnvelopeReturnShape(Shape* res_shape);
 
         /** \brief Shape::getBoundary retrieves a geometry with PK = PK_id from shape.
       \param[in] res_shape
@@ -469,7 +469,41 @@ namespace GeoStar {
        This is a int, set by the user, representing the primary key.
      */
     void deleteRow(int PK_id);
-
+      /** \brief Shape::deletePointInLinestring deletes a point of a line in db with input PK id
+        \param[in] PK_id
+       This is a int, set by the user, representing the primary key.
+       \param[in] point_to_delete
+       This is a string, set by the user, representing the point to be deleted.
+     */
+    void deletePointInLinestring(int PK_id, std::string point_to_delete);
+      /** \brief Shape::movePoint moves a point in db to a new location specified by user
+        \param[in] PK_id
+       This is a int, set by the user, representing the primary key.
+       \param[in] new_x
+       This is a double, set by the user, representing the x coordinate of the new location.
+       \param[in] new_y
+       This is a int, set by the user, representing the y coordinate of the new location.
+     */
+    void movePoint(int PK_id, double new_x, double new_y);
+      /** \brief Shape::deletePointInPolygon deletes a row in db with input PK id
+        \param[in] PK_id
+       This is a int, set by the user, representing the primary key.
+        \param[in] point_to_delete
+       This is a string, set by the user, representing the point to be deleted.
+     */
+    void deletePointInPolygon(int PK_id, std::string point_to_delete);
+      /** \brief Shape::deleteRingInPolygon deletes  a ring of a polygon in db with input PK id
+        \param[in] PK_id
+       This is a int, set by the user, representing the primary key.
+       \param[in] ring_to_delete
+       This is a string, set by the user, representing the ring to be deleted.
+     */
+    void deleteRingInPolygon(int PK_id, std::string ring_to_delete);
+    /** \brief Shape::makeCopy make a copy of a geometry in db with input PK id
+        \param[in] PK_id
+       This is a int, set by the user, representing the primary key.
+     */
+    void makeCopy(int PK_id);
 
   /** \brief Shape::get_column_as_string retrieves the data in a given column as a vector of strings
 
