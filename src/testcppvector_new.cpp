@@ -353,7 +353,7 @@ int main() {
 	shape->deletePointInPolygon(5, ring_to_delete);
 	shape->getGeometries();
 
-        std::cout<<"======testing makecopy=========="<<std::endl;
+    std::cout<<"======testing makecopy=========="<<std::endl;
 	shape = vec->create_shape("shape18", "shape for testing deleteRingInPOLYGON");
 	shape->addPoint(0.5, 0.5);
 	shape->addPoint(4, 4);
@@ -364,6 +364,11 @@ int main() {
 	shape->makecopy(3); //copy a point
 	shape->getGeometries();
 
+	exit(-1);//debug
+
+    std::cout<<"======testing getDistance=========="<<std::endl;
+	double dist = shape->getDistance(1, 2);
+	std::cout << "distance is " << dist << std::endl;
 	exit(-1);//debug
 
         std::cout<<"main: 3.3====================================="<<std::endl;

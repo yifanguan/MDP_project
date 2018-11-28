@@ -859,6 +859,23 @@ void Shape::getSimplifyReturnShape(Shape * res_shape) {
 	    return query.getColumn(0);
 }
 
+    double Shape::getDistance(int pk1, int pk2) {
+	std::string PK_str1 = std::to_string(pk1);
+    std::string PK_str2 = std::to_string(pk2);
+    std::string geo1;
+	std::string geo2;
+	SQLite::Statement query1 (*db, "select (CastToSingle(geometry)) from shape WHERE PK = " + PK_str1);
+	while (query1.executeStep())
+		geo1 = SpatiaLite::GeometryCollection(query1.getColumn(0)).toWKTString();
+	SQLite::Statement query2 (*db, "select (CastToSingle(geometry)) from shape WHERE PK = " + PK_str2);
+	while (query2.executeStep())
+		geo2 = SpatiaLite::GeometryCollection(query2.getColumn(0)).toWKTString();
+	SQLite::Statement query3 (*db, "select Distance(GeomFromText(" + geo1 + "), GeomFromText(" + geo2 + "))");
+	std::cout << geo1 << std::endl<<geo2<<std::endl;
+	while (query3.executeStep())
+		return query3.getColumn(0);
+}
+
     // select the specific geometry and return it as WKT string
     std::string Shape::getGeometry(int PK_id) {
 	std::string PK_string = std::to_string(PK_id);
